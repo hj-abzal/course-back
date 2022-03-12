@@ -13,18 +13,18 @@ export class CourseController {
     return this.courseService.getALl();
   }
 
-  @Get(':id')
-  getOne(@Param('id') id: ObjectId) {
+  @Get(":id")
+  getOne(@Param("id") id: ObjectId) {
     return this.courseService.getOne(id);
   }
 
-  @Delete(':id')
-  delete(@Param('id') id: ObjectId) {
+  @Delete(":id")
+  delete(@Param("id") id: ObjectId) {
     return this.courseService.delete(id);
   }
 
-  @Post('/comment')
-  addComment(@Body() dto: CreateCardDto) {
+  @Post("/card")
+  addCard(@Body() dto: CreateCardDto) {
     return this.courseService.addCard(dto);
   }
 }

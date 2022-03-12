@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, ObjectId } from "mongoose";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
-import { Course, CourseDocument } from "../course/schema/course.schema";
-import { CreateCourseDto } from "../course/dto/create-course.dto";
 import { Teacher, TeacherDocument } from "./schema/create-teacher.dto";
+import { CreateCourseDto } from "../course/dto/create-course.dto";
+import { Course, CourseDocument } from "../course/schema/course.schema";
 
 @Injectable({})
 export class TeacherService {
@@ -23,7 +23,7 @@ export class TeacherService {
   }
 
   async getOne(id: ObjectId): Promise<Teacher> {
-    return this.TeacherModel.findById(id).populate("created_courses");
+    return this.TeacherModel.findById(id).populate("courses");
   }
 
   async delete(id: ObjectId): Promise<ObjectId> {
