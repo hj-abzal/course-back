@@ -2,38 +2,34 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Course, CourseDocument } from "./schema/course.schema";
 import { Model, ObjectId } from "mongoose";
-import { CreateCourseDto } from "./dto/create-course.dto";
 import { CreateCardDto } from "./dto/create-card.dto";
 import { Card, CardDocument } from "./schema/card.schema";
 
 @Injectable({})
 export class CourseService {
-  constructor(@InjectModel(Course.name) private TrackModel: Model<CourseDocument>,
-              @InjectModel(Card.name) private CommentModel: Model<CardDocument>) {
-  }
-
-  async create(dto: CreateCourseDto): Promise<Course> {
-    return await this.TrackModel.create({ ...dto, listens: 0 });
+  constructor(@InjectModel(Course.name) private CourseModel: Model<CourseDocument>,
+              @InjectModel(Card.name) private CardModel: Model<CardDocument>) {
   }
 
   async getALl(): Promise<Course[]> {
-    return this.TrackModel.find();
+    return this.CourseModel.find();
   }
 
   async getOne(id: ObjectId): Promise<Course> {
-    return this.TrackModel.findById(id).populate("comments");
+    return this.CourseModel.findById(id).populate("cards");
   }
 
   async delete(id: ObjectId): Promise<ObjectId> {
-    const res = await this.TrackModel.findByIdAndDelete(id);
+    const res = await this.CourseModel.findByIdAndDelete(id);
+    //TODO: delete all the cards connected to course
     return res._id;
   }
 
-  async addComment(dto: CreateCardDto): Promise<Card> {
-    const track = await this.TrackModel.findById(dto.trackId);
-    const comment = await this.CommentModel.create({ ...dto });
-    track.comments.push(comment._id);
-    await track.save();
-    return comment;
+  async addCard(dto: CreateCardDto): Promise<Card> {
+    const course = await this.CourseModel.findById(dto.courseId);
+    const card = await this.CardModel.create({ ...dto });
+    course.cards.push(card._id);
+    await course.save();
+    return card;
   }
 }

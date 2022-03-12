@@ -1,36 +1,30 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { CourseService } from './course.service';
-import { ObjectId } from 'mongoose';
-import { CreateCardDto } from './dto/create-card.dto';
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { CourseService } from "./course.service";
+import { ObjectId } from "mongoose";
+import { CreateCardDto } from "./dto/create-card.dto";
 
-@Controller('/tracks')
+@Controller("/course")
 export class CourseController {
-  constructor(private trackService: CourseService) {
-  }
-
-  @Post()
-  create(@Body() dto: CreateCourseDto) {
-    return this.trackService.create(dto);
+  constructor(private courseService: CourseService) {
   }
 
   @Get()
   getALl() {
-    return this.trackService.getALl();
+    return this.courseService.getALl();
   }
 
   @Get(':id')
   getOne(@Param('id') id: ObjectId) {
-    return this.trackService.getOne(id);
+    return this.courseService.getOne(id);
   }
 
   @Delete(':id')
   delete(@Param('id') id: ObjectId) {
-    return this.trackService.delete(id);
+    return this.courseService.delete(id);
   }
 
   @Post('/comment')
   addComment(@Body() dto: CreateCardDto) {
-    return this.trackService.addComment(dto);
+    return this.courseService.addCard(dto);
   }
 }

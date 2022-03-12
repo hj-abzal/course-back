@@ -2,31 +2,26 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
 import { Document } from "mongoose";
 import { Card } from "./card.schema";
+import { Teacher } from "../../teacher/schema/create-teacher.dto";
 
 export type CourseDocument = Course & Document;
 
 @Schema()
 export class Course {
   @Prop()
-  name: string;
+  title: string;
 
   @Prop()
-  artist: string;
+  tag: string[];
 
   @Prop()
-  text: string;
-
-  @Prop()
-  listens: string;
-
-  @Prop()
-  picture: string;
-
-  @Prop()
-  audio: string;
+  rating: number;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Card" }] })
-  comments: Card[];
+  cards: Card[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" })
+  teacherId: Teacher;
 }
 
-export const CourseSchema = SchemaFactory.createForClass(Course)
+export const CourseSchema = SchemaFactory.createForClass(Course);

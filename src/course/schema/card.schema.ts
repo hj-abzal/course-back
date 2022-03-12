@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongoose, { Document } from "mongoose";
 import { Course } from "./course.schema";
 
 export type CardDocument = Card & Document;
@@ -7,13 +7,13 @@ export type CardDocument = Card & Document;
 @Schema()
 export class Card {
   @Prop()
-  username: string;
+  question: string;
 
   @Prop()
-  text: string;
+  answer: string;
 
-  @Prop({type:mongoose.Schema.Types.ObjectId, ref: 'Course'})
-  track: Course;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Course" })
+  course: Course;
 }
 
 export  const CardSchema = SchemaFactory.createForClass(Card)
