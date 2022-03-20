@@ -28,7 +28,7 @@ export class TeacherService {
   }
 
   async findByEmail(email: string): Promise<Teacher> {
-    return this.TeacherModel.findOne({}, { email });
+    return this.TeacherModel.findOne({}, {}, { where: { email } });
   }
 
   async delete(id: ObjectId): Promise<ObjectId> {
