@@ -16,6 +16,9 @@ export class Teacher {
   @Prop()
   last_name: string;
 
+  @Prop()
+  password: string;
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }] })
   courses: Course[];
 }

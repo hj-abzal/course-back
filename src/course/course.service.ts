@@ -4,11 +4,16 @@ import { Course, CourseDocument } from "./schema/course.schema";
 import { Model, ObjectId } from "mongoose";
 import { CreateCardDto } from "./dto/create-card.dto";
 import { Card, CardDocument } from "./schema/card.schema";
+import { CreateCourseDto } from "./dto/create-course.dto";
 
 @Injectable({})
 export class CourseService {
   constructor(@InjectModel(Course.name) private CourseModel: Model<CourseDocument>,
               @InjectModel(Card.name) private CardModel: Model<CardDocument>) {
+  }
+
+  async create(dto: CreateCourseDto): Promise<any> { //TODO: fix any
+    return this.CourseModel.create({ ...dto, cards: [] });
   }
 
   async getALl(): Promise<Course[]> {

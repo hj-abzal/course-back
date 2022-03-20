@@ -11,7 +11,8 @@ import { Card, CardSchema } from "./schema/card.schema";
     MongooseModule.forFeature([{ name: Card.name, schema: CardSchema }])
   ],
   controllers: [CourseController],
-  providers: [CourseService]
+  providers: [CourseService],
+  exports: [CourseService]
 })
 export class CourseModule {
 
