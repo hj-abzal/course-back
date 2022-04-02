@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
-import { User } from "./auth.model";
+import { BaseUser, User } from "./auth.model";
 import { TeacherService } from "../teacher/teacher.service";
 import { StudentService } from "../student/student.service";
 import * as bcrypt from "bcryptjs";
@@ -14,9 +14,21 @@ export class AuthService {
   ) {
   }
 
-  async login(checkUser: any): Promise<any> {
-    const user = await this.validateUser(checkUser);
-    return this.generateToken(user, checkUser.role);
+  async login(checkUser: BaseUser): Promise<any> {
+    const user: any = await this.validateUser(checkUser);
+    const { token } = await this.generateToken(user, checkUser.role);
+
+    let res: any = {
+      token,
+      user_id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: checkUser.role
+    };
+    checkUser.role === "teacher"
+      ? res.courses = user.courses
+      : res.subscribedCourses = user.subscribedCourses;
+    return res;
   }
 
   async register(user: User): Promise<any> {
@@ -24,14 +36,12 @@ export class AuthService {
     const candidate = role === "teacher"
       ? await this.checkTeacher(user.email)
       : await this.checkStudent(user.email);
-
-    console.log(candidate);
     if (candidate) {
-      throw new HttpException("Эл.почта уже используется для этого сервиса", HttpStatus.BAD_REQUEST);
+      throw new HttpException("Email is already in use", HttpStatus.BAD_REQUEST);
     } else {
       const hashPassword = await bcrypt.hash(user.password, 5);
 
-      const newUser = role === "teacher"
+      role === "teacher"
         ? await this.teacherService.create({ email, first_name, last_name, password: hashPassword, courses: [] })
         : await this.studentService.create({
           email,
@@ -41,7 +51,7 @@ export class AuthService {
           subscribedCourses: []
         });
 
-      return this.generateToken(newUser, role);
+      return { massage: "ok" };
     }
   }
 
@@ -54,21 +64,23 @@ export class AuthService {
     return this.studentService.findByEmail(email);
   }
 
-  async generateToken(user: any, role: "teacher" | "student") { //TODO: fix any
+  async generateToken(user: any, role: "teacher" | "student") {
     return {
       token: this.jwtService.sign({ email: user.email, id: user._id, role })
     };
   }
 
-  private async validateUser(checkUser: any) {
+  private async validateUser(checkUser: BaseUser) {
     const user = checkUser.role === "teacher"
       ? await this.teacherService.findByEmail(checkUser.email)
       : await this.studentService.findByEmail(checkUser.email);
-    const validatePass = await bcrypt.compare(checkUser.password, user.password);
-    if (user && validatePass) {
-      return user;
+    if (user) {
+      const validatePass = await bcrypt.compare(checkUser.password, user.password);
+      if (validatePass) {
+        return user;
+      }
     } else {
-      throw new UnauthorizedException({ message: "Не корректная почта и/или пароль" });
+      throw new UnauthorizedException({ message: "password or login is not correct" });
     }
   }
 }

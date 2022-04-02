@@ -15,6 +15,13 @@ export class StudentService {
     return await this.StudentModel.create({ ...dto, subscribedCourses: [] });
   }
 
+  async subscribeToCourse(params: { courseId: string, userId: ObjectId }): Promise<any> {
+    const student = await this.StudentModel.findById(params.userId);
+    student.subscribedCourses.push(params.courseId);
+    await student.save();
+    return { message: "ok" };
+  }
+
   async getALl(): Promise<Student[]> {
     return this.StudentModel.find();
   }

@@ -6,31 +6,31 @@ import { CreateCourseDto } from "../course/dto/create-course.dto";
 
 @Controller("/teacher")
 export class TeacherController {
-  constructor(private courseService: TeacherService) {
+  constructor(private teacherService: TeacherService) {
   }
 
   @Post()
   create(@Body() dto: CreateTeacherDto) {
-    return this.courseService.create(dto);
+    return this.teacherService.create(dto);
   }
 
   @Get()
   getALl() {
-    return this.courseService.getALl();
+    return this.teacherService.getALl();
   }
 
   @Get(":id")
   getOne(@Param("id") id: ObjectId) {
-    return this.courseService.getOne(id);
+    return this.teacherService.getOne(id);
   }
 
   @Delete(":id")
   delete(@Param("id") id: ObjectId) {
-    return this.courseService.delete(id);
+    return this.teacherService.delete(id);
   }
 
   @Post("/course")
-  addComment(@Body() dto: CreateCourseDto) {
-    return this.courseService.addCourse(dto);
+  addCourse(@Body() dto: CreateCourseDto) {
+    return this.teacherService.addCourse(dto);
   }
 }

@@ -13,6 +13,11 @@ export class StudentController {
     return this.studentService.create(dto);
   }
 
+  @Post("/subscribe")
+  subscribeToCourse(@Body() dto: { courseId: string, userId: ObjectId }) {
+    return this.studentService.subscribeToCourse(dto);
+  }
+
   @Get()
   getALl() {
     return this.studentService.getALl();

@@ -12,7 +12,7 @@ export class Course {
   title: string;
 
   @Prop()
-  tag: string[];
+  tags: string[];
 
   @Prop()
   rating: number;
