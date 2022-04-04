@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model, ObjectId } from "mongoose";
 import { Student, StudentDocument } from "./schema/create-student.schema";
 import { CreateStudentDto } from "./dto/create-student.dto";
+import { MessageType } from "../course/course.model";
 
 @Injectable({})
 export class StudentService {
@@ -22,6 +23,18 @@ export class StudentService {
     return { message: "ok" };
   }
 
+  async deletedCourses(courseIds: ObjectId[]): Promise<MessageType> {
+    const students = await this.StudentModel.find();
+    students.map(s => {
+      courseIds.map(async (id) => {
+        await this.StudentModel.updateOne({
+          subscribedCourses: s.subscribedCourses.filter(el => el !== id)
+        });
+      });
+    });
+    return { message: "ok" };
+  }
+
   async getALl(): Promise<Student[]> {
     return this.StudentModel.find();
   }
@@ -38,4 +51,6 @@ export class StudentService {
     const res = await this.StudentModel.findByIdAndDelete(id);
     return res._id;
   }
+
+
 }

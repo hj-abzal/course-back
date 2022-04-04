@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { CourseService } from "./course.service";
 import { ObjectId } from "mongoose";
 import { CreateCardDto } from "./dto/create-card.dto";
@@ -18,9 +18,9 @@ export class CourseController {
     return this.courseService.getOne(id);
   }
 
-  @Delete(":id")
-  delete(@Param("id") id: ObjectId) {
-    return this.courseService.delete(id);
+  @Post("/delete")
+  delete(@Body() req: { ids: ObjectId[] }) {
+    return this.courseService.delete(req.ids);
   }
 
   @Post("/card")
@@ -28,8 +28,8 @@ export class CourseController {
     return this.courseService.addCard(dto);
   }
 
-  @Delete("/card/:id")
-  deleteCard(@Param("id") id: ObjectId) {
-    return this.courseService.deleteCard(id);
+  @Post("/card/delete")
+  deleteCard(@Body() req: { cardIds: ObjectId[], courseId: ObjectId }) {
+    return this.courseService.deleteCard(req);
   }
 }
