@@ -27,4 +27,9 @@ export class CourseController {
   addCard(@Body() dto: CreateCardDto) {
     return this.courseService.addCard(dto);
   }
+
+  @Delete("/card/:id")
+  deleteCard(@Param("id") id: ObjectId) {
+    return this.courseService.deleteCard(id);
+  }
 }

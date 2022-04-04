@@ -37,4 +37,9 @@ export class CourseService {
     await course.save();
     return card;
   }
+
+  async deleteCard(id: ObjectId): Promise<ObjectId> {
+    return this.CardModel.findByIdAndDelete(id);
+  }
+
 }
