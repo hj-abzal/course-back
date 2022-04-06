@@ -18,6 +18,11 @@ export class StudentController {
     return this.studentService.subscribeToCourse(dto);
   }
 
+  @Post("/unsubscribe")
+  unsubscribeToCourse(@Body() dto: { ids: ObjectId[] }) {
+    return this.studentService.deletedCourses(dto.ids);
+  }
+
   @Get()
   getALl() {
     return this.studentService.getALl();

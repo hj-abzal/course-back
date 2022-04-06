@@ -25,10 +25,10 @@ export class StudentService {
 
   async deletedCourses(courseIds: ObjectId[]): Promise<MessageType> {
     const students = await this.StudentModel.find();
-    students.map(s => {
+    students.map((s) => {
       courseIds.map(async (id) => {
         await this.StudentModel.updateOne({
-          subscribedCourses: s.subscribedCourses.filter(el => el !== id)
+          subscribedCourses: s.subscribedCourses.filter(el => el.toString() !== id)
         });
       });
     });
