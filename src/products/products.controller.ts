@@ -13,6 +13,10 @@ export class ProductsController {
     return this.productService.create(dto);
   }
 
+
+
+
+
   @Get()
   getALl() {
     return this.productService.getALl();
