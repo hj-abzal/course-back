@@ -2,18 +2,14 @@ import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import { CourseModule } from "./course/course.module";
-import { TeacherModule } from "./teacher/teacher.module";
-import { StudentModule } from "./student/student.module";
-import { AuthModule } from "./auth/auth.module";
+import { ProductsModule } from "./products/products.module";
+import { WorkerModule } from "./workers/worker.module";
 
 @Module({
   imports: [
-    MongooseModule.forRoot("mongodb+srv://Suan:suan7777@nestjs.xaflp.mongodb.net/music-platform?retryWrites=true&w=majority"),
-    CourseModule,
-    TeacherModule,
-    StudentModule,
-    AuthModule
+    MongooseModule.forRoot("mongodb+srv://Suan7:suan7777@cluster0.xaflp.mongodb.net/music-platform?retryWrites=true&w=majority"),
+    ProductsModule,
+    WorkerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
